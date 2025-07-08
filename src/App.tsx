@@ -11,7 +11,11 @@ import CustomizeMeal from "./pages/CustomizeMeal";
 import SuccessStories from "./pages/SuccessStories";
 import RequestCustom from "./pages/RequestCustom";
 import FestiveBooking from "./pages/FestiveBooking";
-import TopSellersPage from "./pages/TopSellersPage"; // Added TopSellersPage import
+import TopSellersPage from "./pages/TopSellersPage";
+import Leaderboard from "./pages/Leaderboard";
+import UploadItems from "./pages/UploadItems";
+import VoiceSearch from "./pages/VoiceSearch";
+import SellerDashboard from "./pages/SellerDashboard";
 import IntroLoader from "./components/IntroLoader";
 import HelpCenter from "./pages/HelpCenter";
 import ShippingInfo from "./pages/ShippingInfo";
@@ -19,7 +23,6 @@ import ReturnPolicy from "./pages/ReturnPolicy";
 import ContactUs from "./pages/ContactUs";
 import SellerSupport from "./pages/SellerSupport";
 import SellerProfile from "./pages/SellerProfile";
-
 
 const queryClient = new QueryClient();
 
@@ -46,15 +49,18 @@ const App = () => {
             <Route path="/customize-meal" element={<CustomizeMeal />} />
             <Route path="/success-stories" element={<SuccessStories />} />
             <Route path="/request-custom" element={<RequestCustom />} />
-            <Route path="/festive-booking" element={<FestiveBooking />} /> {/* Added FestiveBooking route */}
+            <Route path="/festive-booking" element={<FestiveBooking />} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/upload-items" element={<UploadItems />} />
+            <Route path="/voice-search" element={<VoiceSearch />} />
+            <Route path="/seller-dashboard" element={<SellerDashboard />} />
             <Route path="/help" element={<HelpCenter />} />
             <Route path="/shipping" element={<ShippingInfo />} />
             <Route path="/returns" element={<ReturnPolicy />} />
             <Route path="/contact" element={<ContactUs />} />
             <Route path="/seller-support" element={<SellerSupport />} />
             <Route path="/seller/:sellerId" element={<SellerProfile />} />
-            <Route path="/top-sellers" element={<TopSellersPage />} /> {/* Added TopSellersPage route */}
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="/top-sellers" element={<TopSellersPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 interface IntroLoaderProps {
-  onComplete: () => void; // Renamed from onLoadingComplete for consistency with existing file
+  onComplete: () => void;
   duration?: number;
 }
 
@@ -9,15 +9,12 @@ const IntroLoader: React.FC<IntroLoaderProps> = ({ onComplete, duration = 3500 }
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    const fadeOutStartTime = duration - 1000; // Start fading out 1 second before end
+    const fadeOutStartTime = duration - 1000;
 
-    // Timer to start fade-out
     const fadeTimer = setTimeout(() => {
-      // This state could trigger a CSS class for fade-out if preferred
-      // For simplicity here, the main fadeOut is handled by the animation
+      // Start fade-out animation
     }, fadeOutStartTime);
 
-    // Timer to complete and unmount
     const completeTimer = setTimeout(() => {
       setIsVisible(false);
       onComplete();
@@ -41,7 +38,7 @@ const IntroLoader: React.FC<IntroLoaderProps> = ({ onComplete, duration = 3500 }
       <style jsx global>{`
         @keyframes fadeOutAnimation {
           0% { opacity: 1; }
-          70% { opacity: 1; } /* Stay visible for a good portion */
+          70% { opacity: 1; }
           100% { opacity: 0; }
         }
         @keyframes pulseLogo {
@@ -52,20 +49,19 @@ const IntroLoader: React.FC<IntroLoaderProps> = ({ onComplete, duration = 3500 }
 
       {/* Logo */}
       <img
-        src="/assets/logo.jpg"
+        src="/gruhani-logo.jpg"
         alt="गृहिणी Logo"
-        className="w-40 h-40 md:w-48 md:h-48 mb-6" // Adjusted size
+        className="w-40 h-40 md:w-48 md:h-48 mb-6 rounded-2xl shadow-2xl"
         style={{ animation: `pulseLogo 2s infinite ease-in-out` }}
       />
 
-      {/* Brand Name - Optional, as logo contains "Gruhani" visually. Slogan is more key. */}
-      {/* <h1 className="font-heading text-5xl md:text-6xl font-bold text-red-800 mb-4">
-        गृहिणी
-      </h1> */}
-
       {/* Tagline */}
-      <p className="text-xl md:text-2xl text-red-700 font-playfair px-4 text-center">
+      <p className="text-xl md:text-2xl text-red-700 font-playfair px-4 text-center font-semibold">
         घर की रसोई से, दिल तक का सफर
+      </p>
+      
+      <p className="text-sm md:text-base text-red-600 font-poppins px-4 text-center mt-2 opacity-80">
+        Authentic Homemade Delights
       </p>
     </div>
   );

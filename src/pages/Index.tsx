@@ -1,8 +1,9 @@
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
+import TrustFeatures from "@/components/TrustFeatures";
 import CustomizationSection from "@/components/CustomizationSection";
 import CategoryGrid from "@/components/CategoryGrid";
-import MostSoldProducts from "@/components/MostSoldProducts"; // Added import
+import MostSoldProducts from "@/components/MostSoldProducts";
 import TrustSection from "@/components/TrustSection";
 import Footer from "@/components/Footer";
 import QuickActions from "@/components/QuickActions";
@@ -13,9 +14,10 @@ const Index = () => {
       <Header />
       <QuickActions />
       <HeroSection />
+      <TrustFeatures />
       <CustomizationSection />
       <CategoryGrid />
-      <MostSoldProducts /> {/* Added MostSoldProducts section */}
+      <MostSoldProducts />
       <TrustSection />
       <Footer />
     </div>

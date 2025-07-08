@@ -40,22 +40,6 @@ const HeroSection = () => {
             <span className="text-primary font-semibold"> anywhere in the world</span>.
           </p>
 
-          {/* Features */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-8 mb-16">
-            <div className="flex items-center space-x-3 text-base">
-              <span className="w-3 h-3 bg-trust-green rounded-full"></span>
-              <span className="text-muted-foreground">Chemical-free products</span>
-            </div>
-            <div className="flex items-center space-x-3 text-base">
-              <span className="w-3 h-3 bg-primary rounded-full"></span>
-              <span className="text-muted-foreground">Local women entrepreneurs</span>
-            </div>
-            <div className="flex items-center space-x-3 text-base">
-              <span className="w-3 h-3 bg-accent rounded-full"></span>
-              <span className="text-muted-foreground">International shipping</span>
-            </div>
-          </div>
-
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-20">
             <Link to="/explore">

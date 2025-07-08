@@ -1,20 +1,20 @@
-import { useState, ChangeEvent } from "react"; // Added useState, ChangeEvent
+import { useState, ChangeEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Search, User, Heart, Map, Mic, Trophy, Upload, Utensils, Gift, Users } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom"; // Added useNavigate
-import useVoiceSearch from "@/hooks/useVoiceSearch"; // Import the hook
-import { toast } from "sonner"; // For displaying messages
+import { Search, User, Heart, Map, Mic, Trophy, Upload, Utensils, Gift, Users, ShoppingCart, Menu, X } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import useVoiceSearch from "@/hooks/useVoiceSearch";
+import { toast } from "sonner";
 
 const Header = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const user = null; // Replace with actual user state when integrating auth
 
   const handleSearchResult = (transcript: string) => {
     setSearchTerm(transcript);
-    // Optionally, navigate to search results page directly
-    // navigate(`/search?q=${encodeURIComponent(transcript)}`);
+    navigate(`/explore?q=${encodeURIComponent(transcript)}`);
     toast.success(`Voice search result: ${transcript}`);
   };
 
@@ -25,7 +25,7 @@ const Header = () => {
   const { isListening, isSupported, startListening } = useVoiceSearch({
     onResult: handleSearchResult,
     onError: handleVoiceError,
-    lang: 'hi-IN', // Set to Hindi for elderly users, can be made configurable
+    lang: 'hi-IN',
   });
 
   const handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -35,10 +35,8 @@ const Header = () => {
   const handleSearchSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     if (searchTerm.trim()) {
-      // Implement navigation to a search results page or filter logic
-      console.log("Searching for:", searchTerm);
-      navigate(`/explore?q=${encodeURIComponent(searchTerm.trim())}`); // Example navigation
-      setSearchTerm(""); // Clear search term after submit
+      navigate(`/explore?q=${encodeURIComponent(searchTerm.trim())}`);
+      setSearchTerm("");
     }
   };
 
@@ -47,53 +45,71 @@ const Header = () => {
       toast.error("Voice search is not supported in your browser.");
       return;
     }
-    if (isListening) {
-      // stopListening(); // Hook doesn't expose stop, it stops automatically
-    } else {
-      startListening();
-    }
+    startListening();
   };
+
+  const navItems = [
+    { to: "/explore", icon: Utensils, label: "Browse Products" },
+    { to: "/customize-meal", icon: Users, label: "Customize Meal" },
+    { to: "/voice-search", icon: Mic, label: "Voice Search", onClick: handleVoiceSearchClick },
+    { to: "/festive-booking", icon: Gift, label: "Festive Booking" },
+    { to: "/leaderboard", icon: Trophy, label: "Leaderboard" },
+    { to: "/upload-items", icon: Upload, label: "Upload Items" },
+  ];
 
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border shadow-gentle">
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
-          <Link to="/" className="flex items-center space-x-2">
-            <img src="/assets/logo.jpg" alt="गृहिणी Logo" className="h-10 w-auto" />
+          {/* Logo */}
+          <Link to="/" className="flex items-center space-x-3">
+            <img src="/gruhani-logo.jpg" alt="गृहिणी Logo" className="h-12 w-auto rounded-lg shadow-sm" />
+            <div className="hidden sm:block">
+              <h1 className="font-heading text-xl font-bold text-ethnic-primary">गृहिणी</h1>
+              <p className="text-xs text-muted-foreground">घर का स्वाद</p>
+            </div>
           </Link>
 
-          {/* Navbar Links */}
-          <nav className="hidden md:flex space-x-4 font-semibold text-md">
-            <Link to="/explore" className="hover:text-primary transition-colors flex items-center gap-1">
-              <Utensils className="h-4 w-4" /> Browse Products
-            </Link>
-            <Link to="/customise-food" className="hover:text-primary transition-colors flex items-center gap-1">
-              <Users className="h-4 w-4" /> Customise Meal
-            </Link>
-            <Button type="button" variant="ghost" size="sm" className="flex items-center gap-1 px-2" onClick={handleVoiceSearchClick} aria-label="Voice search">
-              <Mic className="h-4 w-4" /> Voice Search
-            </Button>
-            <Link to="/festive-booking" className="hover:text-primary transition-colors flex items-center gap-1">
-              <Gift className="h-4 w-4" /> Festive Booking
-            </Link>
-            <Link to="/leaderboard" className="hover:text-primary transition-colors flex items-center gap-1">
-              <Trophy className="h-4 w-4" /> Leaderboard
-            </Link>
-            <Link to="/upload-items" className="hover:text-primary transition-colors flex items-center gap-1">
-              <Upload className="h-4 w-4" /> Upload Items
-            </Link>
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center space-x-1">
+            {navItems.map((item) => (
+              <div key={item.label}>
+                {item.onClick ? (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="flex items-center gap-2 px-3 py-2 text-sm font-medium hover:bg-accent/50 hover:text-accent-foreground transition-colors"
+                    onClick={item.onClick}
+                  >
+                    <item.icon className="h-4 w-4" />
+                    {item.label}
+                  </Button>
+                ) : (
+                  <Link to={item.to}>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="flex items-center gap-2 px-3 py-2 text-sm font-medium hover:bg-accent/50 hover:text-accent-foreground transition-colors"
+                    >
+                      <item.icon className="h-4 w-4" />
+                      {item.label}
+                    </Button>
+                  </Link>
+                )}
+              </div>
+            ))}
           </nav>
 
           {/* Search Bar - Desktop */}
-          <form onSubmit={handleSearchSubmit} className="hidden md:flex flex-1 max-w-xl mx-6">
+          <form onSubmit={handleSearchSubmit} className="hidden md:flex flex-1 max-w-md mx-6">
             <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
               <input
                 type="text"
                 placeholder={isListening ? "Listening..." : "Search for homemade delights..."}
                 value={searchTerm}
                 onChange={handleSearchInputChange}
-                className="w-full pl-10 pr-10 py-2 rounded-lg border border-input bg-background focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                className="w-full pl-10 pr-12 py-2 rounded-lg border border-input bg-background focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-sm"
               />
               {isSupported && (
                 <Button
@@ -103,59 +119,58 @@ const Header = () => {
                   className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8"
                   onClick={handleVoiceSearchClick}
                   aria-label="Voice search"
-                  disabled={!isSupported}
                 >
-                  <Mic className={`h-5 w-5 ${isListening ? 'text-destructive animate-pulse' : 'text-muted-foreground hover:text-primary'}`} />
+                  <Mic className={`h-4 w-4 ${isListening ? 'text-destructive animate-pulse' : 'text-muted-foreground hover:text-primary'}`} />
                 </Button>
               )}
             </div>
           </form>
 
-          {/* User/Login/Cart */}
+          {/* Right Side Actions */}
           <div className="flex items-center space-x-2">
             <Link to="/cart">
-              <Button variant="outline" size="icon" className="h-9 w-9">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.836l.383 1.437m0 0l1.7 6.385m-.383-7.822L6.75 7.5m0 0h10.5m-10.5 0l1.7 6.385m8.8-6.385l1.7 6.385m-1.7-6.385H6.75m10.5 0l.383-1.437A1.125 1.125 0 0 1 18.364 3h1.386m-1.769 4.5l1.7 6.385m-1.7-6.385H6.75" />
-                </svg>
+              <Button variant="outline" size="icon" className="h-9 w-9 relative">
+                <ShoppingCart className="h-4 w-4" />
+                <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs">
+                  3
+                </Badge>
               </Button>
             </Link>
+            
             {user ? (
-              <Button variant="ethnic" size="sm" className="px-3">
+              <Button variant="ethnic" size="sm" className="px-3 text-sm">
                 {user.name}
               </Button>
             ) : (
               <Link to="/login">
-                <Button variant="ethnic" size="sm" className="px-3">
-                  Login / Sign In
+                <Button variant="ethnic" size="sm" className="px-4 text-sm">
+                  Login
                 </Button>
               </Link>
             )}
+
+            {/* Mobile Menu Button */}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="lg:hidden h-9 w-9"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </Button>
           </div>
         </div>
-
-        {/* Mobile Navbar */}
-        <nav className="md:hidden flex justify-between mt-3 text-sm font-semibold">
-          <Link to="/explore" className="flex-1 text-center py-2 hover:text-primary">Browse</Link>
-          <Link to="/customise-food" className="flex-1 text-center py-2 hover:text-primary">Customise</Link>
-          <Button type="button" variant="ghost" size="sm" className="flex-1 text-center py-2" onClick={handleVoiceSearchClick} aria-label="Voice search">
-            Voice
-          </Button>
-          <Link to="/festive-booking" className="flex-1 text-center py-2 hover:text-primary">Festive</Link>
-          <Link to="/leaderboard" className="flex-1 text-center py-2 hover:text-primary">Leaders</Link>
-          <Link to="/upload-items" className="flex-1 text-center py-2 hover:text-primary">Upload</Link>
-        </nav>
 
         {/* Mobile Search */}
         <form onSubmit={handleSearchSubmit} className="md:hidden mt-3">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
             <input
               type="text"
               placeholder={isListening ? "Listening..." : "Search homemade products..."}
               value={searchTerm}
               onChange={handleSearchInputChange}
-              className="w-full pl-10 pr-10 py-2 rounded-lg border border-input bg-background focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full pl-10 pr-12 py-2 rounded-lg border border-input bg-background focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
             />
             {isSupported && (
               <Button
@@ -165,13 +180,45 @@ const Header = () => {
                 className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8"
                 onClick={handleVoiceSearchClick}
                 aria-label="Voice search"
-                disabled={!isSupported}
               >
-                <Mic className={`h-5 w-5 ${isListening ? 'text-destructive animate-pulse' : 'text-muted-foreground hover:text-primary'}`} />
+                <Mic className={`h-4 w-4 ${isListening ? 'text-destructive animate-pulse' : 'text-muted-foreground hover:text-primary'}`} />
               </Button>
             )}
           </div>
         </form>
+
+        {/* Mobile Navigation Menu */}
+        {isMobileMenuOpen && (
+          <div className="lg:hidden mt-4 pb-4 border-t border-border">
+            <nav className="grid grid-cols-2 gap-2 mt-4">
+              {navItems.map((item) => (
+                <div key={item.label}>
+                  {item.onClick ? (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="w-full justify-start text-sm"
+                      onClick={() => {
+                        item.onClick();
+                        setIsMobileMenuOpen(false);
+                      }}
+                    >
+                      <item.icon className="h-4 w-4 mr-2" />
+                      {item.label}
+                    </Button>
+                  ) : (
+                    <Link to={item.to} onClick={() => setIsMobileMenuOpen(false)}>
+                      <Button variant="ghost" size="sm" className="w-full justify-start text-sm">
+                        <item.icon className="h-4 w-4 mr-2" />
+                        {item.label}
+                      </Button>
+                    </Link>
+                  )}
+                </div>
+              ))}
+            </nav>
+          </div>
+        )}
       </div>
     </header>
   );
