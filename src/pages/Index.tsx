@@ -12,8 +12,8 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background font-body">
       <Header />
-      <QuickActions />
       <HeroSection />
+      <QuickActions />
       <TrustFeatures />
       <CustomizationSection />
       <CategoryGrid />

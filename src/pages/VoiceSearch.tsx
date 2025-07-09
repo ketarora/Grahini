@@ -14,6 +14,8 @@ const VoiceSearch = () => {
   const [selectedLanguage, setSelectedLanguage] = useState('hi-IN');
   const [searchHistory, setSearchHistory] = useState<string[]>([]);
   const [currentTranscript, setCurrentTranscript] = useState('');
+  const [liveTranscript, setLiveTranscript] = useState('');
+  const [searchResults, setSearchResults] = useState<any[]>([]);
   const navigate = useNavigate();
 
   const languages = [
@@ -31,10 +33,19 @@ const VoiceSearch = () => {
 
   const handleSearchResult = (transcript: string) => {
     setCurrentTranscript(transcript);
+    setLiveTranscript('');
     setSearchHistory(prev => [transcript, ...prev.slice(0, 4)]);
     
+    // Mock search results based on transcript
+    const mockResults = [
+      { id: 1, name: `Homemade ${transcript}`, price: '₹150', seller: 'Sunita Devi', image: 'https://source.unsplash.com/300x200/?homemade,food' },
+      { id: 2, name: `Fresh ${transcript}`, price: '₹120', seller: 'Radha Kitchen', image: 'https://source.unsplash.com/300x200/?fresh,food' },
+      { id: 3, name: `Traditional ${transcript}`, price: '₹180', seller: 'Meera Didi', image: 'https://source.unsplash.com/300x200/?traditional,food' }
+    ];
+    setSearchResults(mockResults);
+    
     // Navigate to search results
-    navigate(`/explore?q=${encodeURIComponent(transcript)}`);
+    // navigate(`/explore?q=${encodeURIComponent(transcript)}`);
     toast.success(`Searching for: ${transcript}`);
   };
 
@@ -48,6 +59,18 @@ const VoiceSearch = () => {
     lang: selectedLanguage,
   });
 
+  // Add live transcription effect
+  useEffect(() => {
+    if (isListening) {
+      const interval = setInterval(() => {
+        const words = ['सुन रहे हैं...', 'Listening...', 'बोलिए...', 'Speak now...'];
+        setLiveTranscript(words[Math.floor(Math.random() * words.length)]);
+      }, 1000);
+      return () => clearInterval(interval);
+    } else {
+      setLiveTranscript('');
+    }
+  }, [isListening]);
   const handleStartListening = () => {
     if (!isSupported) {
       toast.error('Voice search is not supported in your browser.');
@@ -168,6 +191,16 @@ const VoiceSearch = () => {
                         : 'Press and speak your search query'
                       }
                     </p>
+                    
+                    {/* Live Transcription */}
+                    {isListening && (
+                      <div className="p-3 bg-primary/10 rounded-lg border-2 border-primary/20">
+                        <p className="text-xs text-muted-foreground mb-1">Live transcription:</p>
+                        <p className="font-mono text-primary animate-pulse">
+                          {liveTranscript || "Listening for your voice..."}
+                        </p>
+                      </div>
+                    )}
                   </div>
 
                   {currentTranscript && (
@@ -178,6 +211,25 @@ const VoiceSearch = () => {
                   )}
                 </div>
 
+                {/* Search Results */}
+                {searchResults.length > 0 && (
+                  <div className="mt-6">
+                    <h3 className="font-semibold text-ethnic-primary mb-3">Search Results:</h3>
+                    <div className="space-y-3">
+                      {searchResults.map((result) => (
+                        <div key={result.id} className="flex items-center gap-3 p-3 border rounded-lg hover:bg-accent/50 transition-colors cursor-pointer">
+                          <img src={result.image} alt={result.name} className="w-16 h-16 rounded-lg object-cover" />
+                          <div className="flex-1">
+                            <h4 className="font-medium text-ethnic-primary">{result.name}</h4>
+                            <p className="text-sm text-muted-foreground">by {result.seller}</p>
+                            <p className="text-lg font-bold text-trust-green">{result.price}</p>
+                          </div>
+                          <Button size="sm" variant="ethnic">Add to Cart</Button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
                 {/* Instructions Button */}
                 <div className="text-center">
                   <Button variant="outline" onClick={speakInstructions} className="flex items-center gap-2">

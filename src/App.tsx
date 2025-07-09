@@ -23,6 +23,7 @@ import ReturnPolicy from "./pages/ReturnPolicy";
 import ContactUs from "./pages/ContactUs";
 import SellerSupport from "./pages/SellerSupport";
 import SellerProfile from "./pages/SellerProfile";
+import Login from "./pages/Login";
 
 const queryClient = new QueryClient();
 
@@ -61,6 +62,7 @@ const App = () => {
             <Route path="/seller-support" element={<SellerSupport />} />
             <Route path="/seller/:sellerId" element={<SellerProfile />} />
             <Route path="/top-sellers" element={<TopSellersPage />} />
+            <Route path="/login" element={<Login />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

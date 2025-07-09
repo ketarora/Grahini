@@ -10,7 +10,7 @@ const Footer = () => {
           {/* Brand */}
           <div className="space-y-4">
             <Link to="/" className="flex items-center space-x-2">
-              <img src="/assets/logo.jpg" alt="गृहिणी Logo" className="h-10 w-auto rounded-lg" />
+              <img src="/gruhani-logo.jpg" alt="गृहिणी Logo" className="h-10 w-auto rounded-lg" />
               {/* <h3 className="font-heading text-xl font-bold">गृहिणी</h3> */}
             </Link>
             <p className="text-sm opacity-80 leading-relaxed">

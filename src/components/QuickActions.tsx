@@ -54,7 +54,7 @@ const QuickActions = () => {
       <div className="container mx-auto px-4">
         {/* Logo at the top */}
         <div className="flex justify-center mb-8">
-          <img src="/assets/logo.jpg" alt="गृहिणी Logo" className="h-16 w-auto rounded-full shadow-lg border-4 border-primary bg-white p-2" />
+          <img src="/gruhani-logo.jpg" alt="गृहिणी Logo" className="h-16 w-auto rounded-full shadow-lg border-4 border-primary bg-white p-2" />
         </div>
         <h2 className="text-3xl md:text-4xl font-heading font-bold text-center text-ethnic-primary mb-6">Quick Actions</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

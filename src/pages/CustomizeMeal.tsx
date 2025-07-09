@@ -130,7 +130,7 @@ const CustomizeMeal = () => {
       <Header />
       {/* Logo at the top */}
       <div className="flex justify-center mt-6 mb-2">
-        <img src="/assets/logo.jpg" alt="गृहिणी Logo" className="h-16 w-auto rounded-full shadow-lg border-4 border-primary bg-white p-2" />
+        <img src="/gruhani-logo.jpg" alt="गृहिणी Logo" className="h-16 w-auto rounded-full shadow-lg border-4 border-primary bg-white p-2" />
       </div>
       {/* Voice Instructions */}
       <div className="flex justify-center items-center gap-4 mb-6">
@@ -329,7 +329,7 @@ const CustomizeMeal = () => {
       </div>
       {/* Logo at the bottom */}
       <div className="flex justify-center mt-8 mb-4">
-        <img src="/assets/logo.jpg" alt="गृहिणी Logo" className="h-12 w-auto rounded-full shadow border-2 border-primary bg-white p-1" />
+        <img src="/gruhani-logo.jpg" alt="गृहिणी Logo" className="h-12 w-auto rounded-full shadow border-2 border-primary bg-white p-1" />
       </div>
       <Footer />
     </div>
