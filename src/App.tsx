@@ -63,6 +63,7 @@ const App = () => {
             <Route path="/seller/:sellerId" element={<SellerProfile />} />
             <Route path="/top-sellers" element={<TopSellersPage />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Login />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
