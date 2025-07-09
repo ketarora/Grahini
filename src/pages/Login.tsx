@@ -8,11 +8,13 @@ import { Badge } from "@/components/ui/badge";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Eye, EyeOff, Mail, Lock, User, Phone, Building, Tag } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   // Customer Login State
   const [customerData, setCustomerData] = useState({
@@ -45,10 +47,25 @@ const Login = () => {
 
   const handleCustomerLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!customerData.email || !customerData.password) {
+      toast.error('Please fill in all fields');
+      return;
+    }
+    
     setIsLoading(true);
     
     // Simulate login process
     setTimeout(() => {
+      // Mock user data - in real app, this would come from API
+      const userData = {
+        id: '1',
+        name: customerData.email.split('@')[0], // Extract name from email for demo
+        email: customerData.email,
+        type: 'customer' as const
+      };
+      
+      login(userData);
       toast.success('Login successful! Welcome back!');
       navigate('/');
       setIsLoading(false);
@@ -102,6 +119,16 @@ Team गृहिणी`;
       console.log('WhatsApp Message:', whatsappMessage);
       
       toast.success('Registration successful! WhatsApp message sent with next steps.');
+      
+      // Auto-login the seller after registration
+      const userData = {
+        id: Date.now().toString(),
+        name: sellerData.name,
+        email: sellerData.email,
+        type: 'seller' as const
+      };
+      
+      login(userData);
       setIsLoading(false);
       
       // Reset form
@@ -113,6 +140,9 @@ Team गृहिणी`;
         categories: [],
         whatsapp: ''
       });
+      
+      // Redirect to seller dashboard
+      navigate('/seller-dashboard');
     }, 2000);
   };
 

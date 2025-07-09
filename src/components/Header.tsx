@@ -5,12 +5,13 @@ import { Search, User, Heart, Map, Mic, Trophy, Upload, Utensils, Gift, Users, S
 import { Link, useNavigate } from "react-router-dom";
 import useVoiceSearch from "@/hooks/useVoiceSearch";
 import { toast } from "sonner";
+import { useAuth } from "@/context/AuthContext";
 
 const Header = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
-  const user = null; // Replace with actual user state when integrating auth
+  const { user, logout, isAuthenticated } = useAuth();
 
   const handleSearchResult = (transcript: string) => {
     setSearchTerm(transcript);
@@ -138,9 +139,14 @@ const Header = () => {
             </Link>
             
             {user ? (
-              <Button variant="ethnic" size="sm" className="px-3 text-sm">
-                {user.name}
-              </Button>
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium text-ethnic-primary">
+                  Hi, {user.name.split(' ')[0]}
+                </span>
+                <Button variant="outline" size="sm" onClick={logout} className="text-xs">
+                  Logout
+                </Button>
+              </div>
             ) : (
               <Link to="/login">
                 <Button variant="ethnic" size="sm" className="px-4 text-sm">

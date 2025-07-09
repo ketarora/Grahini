@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import ExploreProducts from "./pages/ExploreProducts";
@@ -24,6 +25,7 @@ import ContactUs from "./pages/ContactUs";
 import SellerSupport from "./pages/SellerSupport";
 import SellerProfile from "./pages/SellerProfile";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 const queryClient = new QueryClient();
 
@@ -40,34 +42,36 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/explore" element={<ExploreProducts />} />
-            <Route path="/customize-meal" element={<CustomizeMeal />} />
-            <Route path="/success-stories" element={<SuccessStories />} />
-            <Route path="/request-custom" element={<RequestCustom />} />
-            <Route path="/festive-booking" element={<FestiveBooking />} />
-            <Route path="/leaderboard" element={<Leaderboard />} />
-            <Route path="/upload-items" element={<UploadItems />} />
-            <Route path="/voice-search" element={<VoiceSearch />} />
-            <Route path="/seller-dashboard" element={<SellerDashboard />} />
-            <Route path="/help" element={<HelpCenter />} />
-            <Route path="/shipping" element={<ShippingInfo />} />
-            <Route path="/returns" element={<ReturnPolicy />} />
-            <Route path="/contact" element={<ContactUs />} />
-            <Route path="/seller-support" element={<SellerSupport />} />
-            <Route path="/seller/:sellerId" element={<SellerProfile />} />
-            <Route path="/top-sellers" element={<TopSellersPage />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Login />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+      <AuthProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/explore" element={<ExploreProducts />} />
+              <Route path="/customize-meal" element={<CustomizeMeal />} />
+              <Route path="/success-stories" element={<SuccessStories />} />
+              <Route path="/request-custom" element={<RequestCustom />} />
+              <Route path="/festive-booking" element={<FestiveBooking />} />
+              <Route path="/leaderboard" element={<Leaderboard />} />
+              <Route path="/upload-items" element={<UploadItems />} />
+              <Route path="/voice-search" element={<VoiceSearch />} />
+              <Route path="/seller-dashboard" element={<SellerDashboard />} />
+              <Route path="/help" element={<HelpCenter />} />
+              <Route path="/shipping" element={<ShippingInfo />} />
+              <Route path="/returns" element={<ReturnPolicy />} />
+              <Route path="/contact" element={<ContactUs />} />
+              <Route path="/seller-support" element={<SellerSupport />} />
+              <Route path="/seller/:sellerId" element={<SellerProfile />} />
+              <Route path="/top-sellers" element={<TopSellersPage />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 };
