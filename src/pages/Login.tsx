@@ -27,6 +27,7 @@ const Login = () => {
     name: '',
     phone: '',
     email: '',
+    password: '',
     businessName: '',
     categories: [] as string[],
     whatsapp: ''
@@ -75,6 +76,18 @@ const Login = () => {
   const handleSellerRegistration = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+
+    if (!sellerData.name || !sellerData.email || !sellerData.password || !sellerData.phone) {
+      toast.error('Please fill in all required fields');
+      setIsLoading(false);
+      return;
+    }
+
+    if (sellerData.password.length < 6) {
+      toast.error('Password must be at least 6 characters');
+      setIsLoading(false);
+      return;
+    }
 
     if (sellerData.categories.length === 0) {
       toast.error('Please select at least one category');
@@ -136,6 +149,7 @@ Team गृहिणी`;
         name: '',
         phone: '',
         email: '',
+        password: '',
         businessName: '',
         categories: [],
         whatsapp: ''
@@ -321,6 +335,29 @@ Team गृहिणी`;
                         onChange={(e) => setSellerData(prev => ({ ...prev, email: e.target.value }))}
                         required
                       />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="seller-password">Password *</Label>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                      <Input
+                        id="seller-password"
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Create a password"
+                        className="pl-10 pr-10"
+                        value={sellerData.password}
+                        onChange={(e) => setSellerData(prev => ({ ...prev, password: e.target.value }))}
+                        required
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                      >
+                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      </button>
                     </div>
                   </div>
 
